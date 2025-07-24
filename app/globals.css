@@ -1,6 +1,19 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
+/* 전체 페이지 스케일 80% 설정 */
+html {
+  zoom: 0.8;
+}
+
+/* 또는 transform 방식 (더 호환성 좋음)
+  body {
+  transform: scale(0.8);
+  transform-origin: top left;
+  width: 125%; 
+  height: 125%;
+} */
+
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
