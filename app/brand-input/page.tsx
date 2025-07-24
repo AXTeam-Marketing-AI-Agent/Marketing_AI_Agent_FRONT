@@ -29,12 +29,12 @@ export default function BrandInputPage() {
     brandName: "",
     industry: "",
     description: "",
-    targetAge: [],
+    targetAge: [] as string[],
     targetGender: "",
     budget: "",
     goals: "",
     competitors: "",
-    channels: [],
+    channels: [] as string[],
     timeline: "",
   })
 
@@ -55,14 +55,14 @@ export default function BrandInputPage() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
-      <header className="bg-white border-b border-gray-200">
+      <header className="bg-gradient-to-r from-teal-600 to-cyan-600 border-b border-teal-700">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center h-16">
-            <Button variant="ghost" className="mr-4">
+            <Button variant="ghost" className="mr-4 text-white hover:bg-white/20">
               <ArrowLeft className="w-4 h-4 mr-2" />
               돌아가기
             </Button>
-            <h1 className="text-xl font-bold text-gray-900">브랜드 정보 입력</h1>
+            <h1 className="text-xl font-bold text-white">브랜드 정보 입력</h1>
           </div>
         </div>
       </header>

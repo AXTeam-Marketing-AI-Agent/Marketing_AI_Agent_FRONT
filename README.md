@@ -1,37 +1,95 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 마케팅 전략 AI Agent
 
-## Getting Started
+대홍기획 사내 마케팅 전략 수립을 위한 AI 기반 팩트북 생성 및 전략 도출 시스템
 
-First, run the development server:
+## 📋 프로젝트 개요
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+이 시스템은 브랜드별 팩트북을 자동 생성하고, 이를 기반으로 다양한 마케팅 전략을 AI가 제안하는 도구입니다.
+
+### 주요 기능
+- 🔍 **팩트북 자동 생성**: 브랜드 정보 입력 시 7개 섹션별 데이터 자동 수집
+- 🎯 **전략 생성**: TV 광고, 퍼포먼스 마케팅, SNS 콘텐츠 등 5가지 전략 유형 지원
+- 💬 **AI 채팅**: 생성된 전략에 대한 상세 질의응답
+- 📊 **관리자 대시보드**: LLM 사용량 및 비용 모니터링
+- 📚 **서비스 가이드북**: 사용자 매뉴얼 제공
+
+## 🛠 기술 스택
+
+- **Frontend**: Next.js 15, React 19, TypeScript
+- **Styling**: Tailwind CSS, Radix UI
+- **Backend**: FastAPI, Python
+- **Database**: PostgreSQL
+- **AI/LLM**: OpenAI GPT, Claude, Gemini, Perplexity
+- **Deployment**: Vercel
+
+## 🏗 시스템 구조
+
+```
+marketing_strategy_ui/
+├── app/                    # Next.js App Router
+│   ├── page.tsx           # 팩트북 라이브러리 (메인)
+│   ├── create-factbook/   # 팩트북 생성
+│   ├── factbook/[id]/    # 팩트북 상세
+│   ├── strategy-selection/ # 전략 유형 선택
+│   ├── strategy-result/   # 전략 결과
+│   ├── admin-llm-logs/   # 관리자 대시보드
+│   └── manual/           # 서비스 가이드북
+├── components/           # 재사용 컴포넌트
+└── lib/                 # 유틸리티 함수
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🚀 실행 방법
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 개발 환경
+```bash
+# 의존성 설치
+npm install
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+# 개발 서버 실행
+npm run dev
+```
 
-## Learn More
+### 프로덕션 빌드
+```bash
+# 빌드
+npm run build
 
-To learn more about Next.js, take a look at the following resources:
+# 프로덕션 실행
+npm start
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 📈 주요 성과
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- **개발 기간**: 2024년 12월 (약 1개월)
+- **사용자 대상**: 대홍기획 마케팅 전략팀
+- **기능**: 팩트북 생성, 전략 도출, AI 채팅, 관리자 대시보드
+- **LLM 통합**: 4개 주요 AI 모델 통합 (GPT, Claude, Gemini, Perplexity)
 
-## Deploy on Vercel
+## 🔐 보안
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- 보안 코드 인증 시스템 (8시간 갱신)
+- 사내 전용 시스템으로 설계
+- LLM API 사용량 모니터링 및 비용 관리
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
-# marketing_strategy_ui
+## 👨‍💻 개발자 정보
+
+**개발자**: 임주혁  
+**소속**: 대홍기획 AX Team  
+**이메일**: juhyeok1104@gmail.com  
+**개발 기간**: 2024년 12월  
+
+### 개발 기여도
+- **기획 및 설계**: 100% (단독 개발)
+- **프론트엔드 개발**: 100% (Next.js, React, TypeScript)
+- **백엔드 연동**: 100% (FastAPI 연동)
+- **UI/UX 디자인**: 100% (Tailwind CSS, Radix UI)
+- **LLM 통합**: 100% (4개 AI 모델 통합)
+- **배포 및 운영**: 100% (Vercel 배포)
+
+## 📄 라이센스
+
+이 프로젝트는 대홍기획 사내 시스템으로 개발되었습니다.
+
+---
+
+**© 2024 임주혁, 대홍기획. All rights reserved.**

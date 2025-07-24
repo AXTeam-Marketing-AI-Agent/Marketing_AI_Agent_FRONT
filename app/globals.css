@@ -120,3 +120,173 @@
     @apply bg-background text-foreground;
   }
 }
+
+.prose table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+  font-size: 0.95rem;
+}
+.prose th, .prose td {
+  border: 1px solid #e5e7eb; /* Tailwind gray-200 */
+  padding: 0.5rem 0.75rem;
+  text-align: left;
+}
+.prose th {
+  background-color: #f3f4f6; /* Tailwind gray-100 */
+  font-weight: 600;
+}
+.prose tr:nth-child(even) td {
+  background-color: #f9fafb; /* Tailwind gray-50 */
+}
+
+.prose a {
+  color: #2563eb;
+  font-weight: thin;
+  text-decoration: none;
+  font-size: 0.9em;
+}
+
+.prose a[href^="http"]:not(.no-citation),
+.prose a[href^="/"]:not(.no-citation) {
+  color: #2563eb; /* Tailwind blue-600 */
+  font-weight: bold;
+  text-decoration: underline;
+}
+
+.prose a:has(> strong) {
+  color: #2563eb;
+  font-weight: bold;
+  text-decoration: underline;
+}
+
+.prose a.citation-link {
+  color: #2563eb;
+  font-weight: bold;
+  text-decoration: underline;
+}
+
+.prose h1 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid #e5e7eb;
+  padding-bottom: 0.2em;
+}
+
+.prose h2 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.prose h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-top: 1.2rem;
+  margin-bottom: 0.5rem;
+}
+
+.prose h4 {
+  font-size: 1rem;
+  font-weight: 500;
+  margin-top: 1rem;
+  margin-bottom: 0.4rem;
+}
+
+.prose h5 {
+  font-size: 1rem;
+  font-weight: 500;
+  margin-top: 1rem;
+  margin-bottom: 0.4rem;
+}
+
+.prose h6 {
+  font-size: 0.95rem;
+  font-weight: 500;
+  margin-top: 0.8rem;
+  margin-bottom: 0.3rem;
+}
+
+.prose ul {
+  list-style-type: disc;
+  margin-left: 1.5em;
+  margin-bottom: 1em;
+  padding-left: 0;
+}
+
+.prose ul li {
+  margin-bottom: 0.3em;
+  font-size: 1rem;
+  line-height: 1.7;
+  padding-left: 0.2em;
+}
+
+.prose ul li::marker {
+  font-size: 1.1em;
+}
+
+.section-ul-company_intro li::marker { color: #3b82f6; }
+.section-ul-major_issues li::marker { color: #22c55e; }
+.section-ul-consumer_reactions li::marker { color: #a21caf; }
+.section-ul-market_analysis li::marker { color: #f59e42; }
+.section-ul-competitor_analysis li::marker { color: #ef4444; }
+.section-ul-company_communication li::marker { color: #6366f1; }
+.section-ul-competitor_communication li::marker { color: #ec4899; }
+
+/* 회사 및 브랜드 소개 (파랑 계열) */
+.section-h1-company_intro { color: #2563eb; }   /* blue-600 */
+.section-h2-company_intro { color: #3b82f6; }   /* blue-500 */
+.section-h3-company_intro { color: #60a5fa; }   /* blue-400 */
+
+/* 주요이슈 (초록 계열) */
+.section-h1-major_issues { color: #16a34a; }    /* green-600 */
+.section-h2-major_issues { color: #22c55e; }    /* green-500 */
+.section-h3-major_issues { color: #4ade80; }    /* green-400 */
+
+/* 소비자반응 (보라 계열) */
+.section-h1-consumer_reactions { color: #a21caf; } /* purple-700 */
+.section-h2-consumer_reactions { color: #c026d3; } /* purple-600 */
+.section-h3-consumer_reactions { color: #e879f9; } /* purple-400 */
+
+/* 시장분석 (주황 계열) */
+.section-h1-market_analysis { color: #ea580c; }  /* orange-600 */
+.section-h2-market_analysis { color: #f59e42; }  /* orange-400 */
+.section-h3-market_analysis { color: #fdba74; }  /* orange-300 */
+
+/* 경쟁사분석 (빨강 계열) */
+.section-h1-competitor_analysis { color: #dc2626; } /* red-600 */
+.section-h2-competitor_analysis { color: #ef4444; } /* red-500 */
+.section-h3-competitor_analysis { color: #fca5a5; } /* red-300 */
+
+/* 자사커뮤니케이션 (인디고 계열) */
+.section-h1-company_communication { color: #6366f1; } /* indigo-500 */
+.section-h2-company_communication { color: #818cf8; } /* indigo-400 */
+.section-h3-company_communication { color: #a5b4fc; } /* indigo-300 */
+
+/* 경쟁사커뮤니케이션 (핑크 계열) */
+.section-h1-competitor_communication { color: #ec4899; } /* pink-500 */
+.section-h2-competitor_communication { color: #f472b6; } /* pink-400 */
+.section-h3-competitor_communication { color: #f9a8d4; } /* pink-300 */
+
+@keyframes fadein {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: none; }
+}
+.animate-fadein {
+  animation: fadein 0.5s;
+}
+
+@keyframes highlight-fade {
+  0% { background-color: #fef9c3; }
+  100% { background-color: transparent; }
+}
+.highlight-fade {
+  animation: highlight-fade 1s;
+}
+
+.brain-node { transition: filter 0.2s, box-shadow 0.2s; cursor: pointer; }
+.brain-node:hover { filter: brightness(1.2); box-shadow: 0 4px 16px 0 rgba(34,197,94,0.15); }
+.brain-overlay { background: rgba(0,0,0,0.4); }

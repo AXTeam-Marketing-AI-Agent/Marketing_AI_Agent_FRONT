@@ -1,3 +1,32 @@
+/**
+ * 전략 상세 페이지
+ * 
+ * 이 페이지는 생성된 마케팅 전략의 상세 내용을 보여주는 페이지입니다.
+ * 전략의 목표, 기간, 예산, 타겟 등 기본 정보와 함께 크리에이티브, 미디어 전략,
+ * 성과 지표, 리스크 관리 등 세부 전략 내용을 제공합니다.
+ * 
+ * 페이지 구성:
+ * 1. 전략 개요
+ *    - 목표, 기간, 예산, 타겟 정보
+ *    - 공유, 다운로드, 승인 기능
+ * 
+ * 2. 상세 전략
+ *    - 크리에이티브 전략
+ *    - 미디어 전략
+ *    - 성과 지표
+ *    - 리스크 관리
+ * 
+ * 3. AI 채팅
+ *    - 전략 관련 질의응답
+ *    - 전략 수정 및 보완
+ * 
+ * 주요 기능:
+ * - 전략 상세 정보 표시
+ * - 탭 기반 전략 섹션 탐색
+ * - AI 기반 전략 상담
+ * - 전략 공유 및 다운로드
+ */
+
 "use client"
 
 import { useState } from "react"
@@ -19,391 +48,198 @@ import {
   MessageSquare,
   Lightbulb,
   CheckCircle,
+  ArrowRight,
+  Upload,
+  FileText,
 } from "lucide-react"
+import { Label } from "@/components/ui/label"
+import { useRouter } from "next/navigation"
+import { Progress } from "@/components/ui/progress"
+import { Textarea } from "@/components/ui/textarea"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 
-const strategyData = {
-  type: "TV 광고 전략",
-  objective: "브랜드 인지도 향상 및 신제품 런칭",
-  timeline: "3개월 (2024년 2월 - 4월)",
-  budget: "50억원",
-
-  creative: {
-    concept: "일상 속 특별한 순간을 만드는 스타벅스",
-    message: "매일의 소중한 순간, 스타벅스와 함께",
-    tone: "따뜻하고 친근하며 감성적인",
-    visuals: [
-      "다양한 연령대의 고객들이 스타벅스에서 보내는 일상",
-      "계절감 있는 따뜻한 색감과 자연스러운 조명",
-      "제품보다는 경험과 감정에 초점",
-    ],
-  },
-
-  media: {
-    channels: [
-      { name: "TV", allocation: "60%", budget: "30억원", description: "프라임타임 및 주말 집중 편성" },
-      { name: "디지털", allocation: "25%", budget: "12.5억원", description: "YouTube, 네이버TV 등" },
-      { name: "옥외광고", allocation: "15%", budget: "7.5억원", description: "지하철, 버스정류장 중심" },
-    ],
-    schedule: [
-      { period: "1주차", activity: "티저 캠페인 시작", channels: ["디지털", "옥외"] },
-      { period: "2-4주차", activity: "메인 캠페인 런칭", channels: ["TV", "디지털", "옥외"] },
-      { period: "5-8주차", activity: "집중 노출 기간", channels: ["TV", "디지털"] },
-      { period: "9-12주차", activity: "마무리 및 효과 측정", channels: ["디지털"] },
-    ],
-  },
-
-  targeting: {
-    primary: "25-40세 여성, 중상위 소득층",
-    secondary: "20-25세 대학생 및 사회초년생",
-    reach: "타겟 도달률 80% 목표",
-    frequency: "평균 노출 빈도 5-7회",
-  },
-
-  kpis: [
-    { metric: "브랜드 인지도", target: "현재 대비 15% 증가", measurement: "브랜드 트래킹 조사" },
-    { metric: "광고 회상률", target: "35% 이상", measurement: "광고 효과 조사" },
-    { metric: "매장 방문 증가율", target: "10% 증가", measurement: "매장 데이터 분석" },
-    { metric: "SNS 언급량", target: "50% 증가", measurement: "소셜 리스닝" },
-  ],
-
-  risks: [
-    { risk: "경쟁사 대응 캠페인", mitigation: "차별화된 크리에이티브로 독창성 확보" },
-    { risk: "시장 상황 변화", mitigation: "실시간 모니터링 및 유연한 미디어 조정" },
-    { risk: "제작 일정 지연", mitigation: "사전 제작 및 백업 플랜 준비" },
-  ],
-}
-
-const chatMessages = [
-  {
-    id: 1,
-    type: "assistant",
-    content:
-      "스타벅스 코리아의 TV 광고 전략을 생성했습니다. 어떤 부분에 대해 더 자세히 알고 싶으시거나 수정하고 싶은 부분이 있나요?",
-  },
+/**
+ * 전략 카테고리 옵션
+ */
+const strategyCategories = [
+  { id: "tv", label: "TV 광고 전략", description: "TV 광고를 통한 브랜드 인지도 및 매출 증대" },
+  { id: "performance", label: "퍼포먼스 마케팅 전략", description: "CPA/ROAS 기반의 효율적인 광고 집행" },
+  { id: "digital", label: "디지털 마케팅 전략", description: "온라인 채널을 활용한 통합 마케팅" },
+  { id: "social", label: "SNS 마케팅 전략", description: "소셜 미디어를 활용한 브랜드 커뮤니케이션" },
+  { id: "influencer", label: "인플루언서 마케팅 전략", description: "인플루언서를 활용한 브랜드 홍보" },
+  { id: "brand", label: "브랜드 캠페인", description: "브랜드 가치 제고를 위한 통합 캠페인" },
+  { id: "pr", label: "PR 전략", description: "언론 보도 및 홍보를 통한 브랜드 이미지 구축" },
+  { id: "event", label: "이벤트/프로모션", description: "오프라인 이벤트 및 프로모션 전략" },
+  { id: "content", label: "콘텐츠 마케팅 전략", description: "브랜드 콘텐츠를 통한 고객 유입 및 전환" },
+  { id: "search", label: "검색 마케팅 전략", description: "검색 광고 및 SEO를 통한 트래픽 확보" },
 ]
 
+/**
+ * 전략 생성 페이지
+ * 
+ * 이 페이지는 마케팅 전략을 생성하기 위한 페이지입니다.
+ * 팩트북의 정보를 기반으로 AI가 전략을 생성하며, 사용자는 다음 정보만 입력합니다:
+ * 1. 전략 카테고리 선택
+ * 2. 전략 목표 입력
+ * 3. RFP 파일 업로드 (선택)
+ */
 export default function StrategyPage() {
-  const [messages, setMessages] = useState(chatMessages)
-  const [input, setInput] = useState("")
-  const [activeTab, setActiveTab] = useState("overview")
+  const router = useRouter()
+  const [formData, setFormData] = useState({
+    strategyCategory: "",
+    objective: "",
+    rfpFile: null as File | null,
+  })
+  const [isGenerating, setIsGenerating] = useState(false)
+  const [uploadProgress, setUploadProgress] = useState(0)
 
-  const handleSendMessage = () => {
-    if (!input.trim()) return
-
-    const newMessage = {
-      id: messages.length + 1,
-      type: "user" as const,
-      content: input,
+  /**
+   * RFP 파일 업로드 처리
+   */
+  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (file) {
+      setFormData((prev) => ({ ...prev, rfpFile: file }))
+      // 파일 업로드 진행률 시뮬레이션
+      let progress = 0
+      const interval = setInterval(() => {
+        progress += 10
+        setUploadProgress(progress)
+        if (progress >= 100) clearInterval(interval)
+      }, 200)
     }
-
-    setMessages([...messages, newMessage])
-    setInput("")
-
-    // Simulate AI response
-    setTimeout(() => {
-      const aiResponse = {
-        id: messages.length + 2,
-        type: "assistant" as const,
-        content: "네, 좋은 질문입니다. 해당 부분에 대해 더 구체적으로 설명드리겠습니다...",
-      }
-      setMessages((prev) => [...prev, aiResponse])
-    }, 1000)
   }
 
+  /**
+   * 전략 생성 처리
+   */
+  const handleGenerateStrategy = async () => {
+    if (!formData.strategyCategory || !formData.objective) return
+
+    setIsGenerating(true)
+    // 전략 생성 API 호출 시뮬레이션
+    setTimeout(() => {
+      setIsGenerating(false)
+      router.push("/strategy/1") // 생성된 전략 페이지로 이동
+    }, 2000)
+  }
+
+  /**
+   * 필수 입력 항목 검증
+   */
+  const canSubmit = formData.strategyCategory && formData.objective
+
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <header className="bg-white border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-            <div className="flex items-center">
-              <Button variant="ghost" className="mr-4">
-                <ArrowLeft className="w-4 h-4 mr-2" />
-                돌아가기
+    <div className="container mx-auto py-8">
+      <Card className="max-w-2xl mx-auto bg-gradient-to-br from-purple-50 to-pink-50 border-purple-200">
+        <CardHeader className="bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-t-lg">
+          <div className="flex items-center space-x-4">
+            <Button variant="outline" size="icon" onClick={() => router.back()} className="bg-white/20 border-white/30 text-white hover:bg-white/30">
+              <ArrowLeft className="h-4 w-4" />
               </Button>
-              <div className="flex items-center space-x-3">
-                <Target className="w-6 h-6 text-green-600" />
                 <div>
-                  <h1 className="text-xl font-bold text-gray-900">{strategyData.type}</h1>
-                  <p className="text-sm text-gray-500">스타벅스 코리아 • 2024-01-15 생성</p>
-                </div>
-              </div>
-            </div>
-            <div className="flex items-center space-x-3">
-              <Button variant="outline" size="sm">
-                <Share2 className="w-4 h-4 mr-2" />
-                공유
-              </Button>
-              <Button variant="outline" size="sm">
-                <Download className="w-4 h-4 mr-2" />
-                다운로드
-              </Button>
-              <Button size="sm">
-                <CheckCircle className="w-4 h-4 mr-2" />
-                승인
-              </Button>
+              <CardTitle className="text-white">새 전략 생성</CardTitle>
+              <CardDescription className="text-purple-100">
+                팩트북을 기반으로 마케팅 전략을 생성합니다.
+              </CardDescription>
             </div>
           </div>
-        </div>
-      </header>
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Main Content */}
-          <div className="lg:col-span-2">
-            {/* Strategy Overview */}
-            <Card className="mb-6">
-              <CardHeader>
-                <CardTitle>전략 개요</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="p-4 bg-blue-50 rounded-lg">
-                    <div className="flex items-center space-x-2 mb-2">
-                      <Target className="w-4 h-4 text-blue-600" />
-                      <span className="font-medium text-blue-900">목표</span>
-                    </div>
-                    <p className="text-blue-700 text-sm">{strategyData.objective}</p>
-                  </div>
-                  <div className="p-4 bg-green-50 rounded-lg">
-                    <div className="flex items-center space-x-2 mb-2">
-                      <Calendar className="w-4 h-4 text-green-600" />
-                      <span className="font-medium text-green-900">기간</span>
-                    </div>
-                    <p className="text-green-700 text-sm">{strategyData.timeline}</p>
-                  </div>
-                  <div className="p-4 bg-purple-50 rounded-lg">
-                    <div className="flex items-center space-x-2 mb-2">
-                      <DollarSign className="w-4 h-4 text-purple-600" />
-                      <span className="font-medium text-purple-900">예산</span>
-                    </div>
-                    <p className="text-purple-700 text-sm">{strategyData.budget}</p>
-                  </div>
-                  <div className="p-4 bg-orange-50 rounded-lg">
-                    <div className="flex items-center space-x-2 mb-2">
-                      <Users className="w-4 h-4 text-orange-600" />
-                      <span className="font-medium text-orange-900">타겟</span>
-                    </div>
-                    <p className="text-orange-700 text-sm">{strategyData.targeting.primary}</p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Detailed Strategy */}
-            <Card>
-              <CardContent className="p-0">
-                <Tabs value={activeTab} onValueChange={setActiveTab}>
-                  <TabsList className="grid w-full grid-cols-4">
-                    <TabsTrigger value="overview">크리에이티브</TabsTrigger>
-                    <TabsTrigger value="media">미디어 전략</TabsTrigger>
-                    <TabsTrigger value="kpis">성과 지표</TabsTrigger>
-                    <TabsTrigger value="risks">리스크 관리</TabsTrigger>
-                  </TabsList>
-
-                  <TabsContent value="overview" className="p-6">
                     <div className="space-y-6">
-                      <div>
-                        <h3 className="font-semibold mb-3">크리에이티브 컨셉</h3>
-                        <div className="p-4 bg-yellow-50 rounded-lg">
-                          <h4 className="font-medium text-yellow-900 mb-2">{strategyData.creative.concept}</h4>
-                          <p className="text-yellow-700 text-sm mb-3">핵심 메시지: {strategyData.creative.message}</p>
-                          <p className="text-yellow-700 text-sm">톤앤매너: {strategyData.creative.tone}</p>
-                        </div>
-                      </div>
-
-                      <div>
-                        <h3 className="font-semibold mb-3">비주얼 방향성</h3>
+            {/* 전략 카테고리 선택 */}
                         <div className="space-y-2">
-                          {strategyData.creative.visuals.map((visual, index) => (
-                            <div key={index} className="flex items-start space-x-2">
-                              <div className="w-2 h-2 bg-yellow-500 rounded-full mt-2"></div>
-                              <span className="text-gray-700 text-sm">{visual}</span>
-                            </div>
-                          ))}
-                        </div>
+              <Label htmlFor="strategyCategory">전략 카테고리 *</Label>
+              <Select
+                value={formData.strategyCategory}
+                onValueChange={(value) => setFormData((prev) => ({ ...prev, strategyCategory: value }))}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="전략 카테고리를 선택하세요" />
+                </SelectTrigger>
+                <SelectContent>
+                  {strategyCategories.map((category) => (
+                    <SelectItem key={category.id} value={category.id}>
+                      <div className="flex flex-col">
+                        <span>{category.label}</span>
+                        <span className="text-xs text-gray-500">{category.description}</span>
                       </div>
-                    </div>
-                  </TabsContent>
-
-                  <TabsContent value="media" className="p-6">
-                    <div className="space-y-6">
-                      <div>
-                        <h3 className="font-semibold mb-3">미디어 믹스</h3>
-                        <div className="space-y-3">
-                          {strategyData.media.channels.map((channel, index) => (
-                            <div key={index} className="p-4 border border-gray-200 rounded-lg">
-                              <div className="flex items-center justify-between mb-2">
-                                <span className="font-medium">{channel.name}</span>
-                                <div className="flex items-center space-x-2">
-                                  <Badge variant="secondary">{channel.allocation}</Badge>
-                                  <Badge variant="outline">{channel.budget}</Badge>
-                                </div>
-                              </div>
-                              <p className="text-sm text-gray-600">{channel.description}</p>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-
-                      <div>
-                        <h3 className="font-semibold mb-3">실행 일정</h3>
-                        <div className="space-y-3">
-                          {strategyData.media.schedule.map((item, index) => (
-                            <div key={index} className="p-3 bg-gray-50 rounded-lg">
-                              <div className="flex items-center justify-between mb-1">
-                                <span className="font-medium text-sm">{item.period}</span>
-                                <div className="flex space-x-1">
-                                  {item.channels.map((channel, idx) => (
-                                    <Badge key={idx} variant="outline" className="text-xs">
-                                      {channel}
-                                    </Badge>
-                                  ))}
-                                </div>
-                              </div>
-                              <p className="text-sm text-gray-600">{item.activity}</p>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-
-                      <div>
-                        <h3 className="font-semibold mb-3">타겟팅 전략</h3>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                          <div className="p-4 bg-purple-50 rounded-lg">
-                            <h4 className="font-medium text-purple-900 mb-2">주요 타겟</h4>
-                            <p className="text-purple-700 text-sm">{strategyData.targeting.primary}</p>
-                          </div>
-                          <div className="p-4 bg-purple-50 rounded-lg">
-                            <h4 className="font-medium text-purple-900 mb-2">보조 타겟</h4>
-                            <p className="text-purple-700 text-sm">{strategyData.targeting.secondary}</p>
-                          </div>
-                          <div className="p-4 bg-blue-50 rounded-lg">
-                            <h4 className="font-medium text-blue-900 mb-2">도달률 목표</h4>
-                            <p className="text-blue-700 text-sm">{strategyData.targeting.reach}</p>
-                          </div>
-                          <div className="p-4 bg-blue-50 rounded-lg">
-                            <h4 className="font-medium text-blue-900 mb-2">노출 빈도</h4>
-                            <p className="text-blue-700 text-sm">{strategyData.targeting.frequency}</p>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </TabsContent>
-
-                  <TabsContent value="kpis" className="p-6">
-                    <div className="space-y-4">
-                      <h3 className="font-semibold mb-3">핵심 성과 지표 (KPI)</h3>
-                      {strategyData.kpis.map((kpi, index) => (
-                        <div key={index} className="p-4 border border-gray-200 rounded-lg">
-                          <div className="flex items-center justify-between mb-2">
-                            <h4 className="font-medium">{kpi.metric}</h4>
-                            <Badge variant="default">{kpi.target}</Badge>
-                          </div>
-                          <p className="text-sm text-gray-600">측정 방법: {kpi.measurement}</p>
-                        </div>
-                      ))}
-                    </div>
-                  </TabsContent>
-
-                  <TabsContent value="risks" className="p-6">
-                    <div className="space-y-4">
-                      <h3 className="font-semibold mb-3">리스크 요인 및 대응 방안</h3>
-                      {strategyData.risks.map((risk, index) => (
-                        <div key={index} className="p-4 border border-red-200 bg-red-50 rounded-lg">
-                          <h4 className="font-medium text-red-900 mb-2">⚠️ {risk.risk}</h4>
-                          <p className="text-red-700 text-sm">
-                            <span className="font-medium">대응 방안:</span> {risk.mitigation}
-                          </p>
-                        </div>
-                      ))}
-                    </div>
-                  </TabsContent>
-                </Tabs>
-              </CardContent>
-            </Card>
-          </div>
-
-          {/* Chat Sidebar */}
-          <div className="lg:col-span-1">
-            <Card className="h-[600px] flex flex-col">
-              <CardHeader>
-                <CardTitle className="flex items-center space-x-2">
-                  <MessageSquare className="w-5 h-5" />
-                  <span>전략 Q&A</span>
-                </CardTitle>
-                <CardDescription>전략에 대해 질문하거나 수정 요청을 해보세요</CardDescription>
-              </CardHeader>
-
-              <CardContent className="flex-1 flex flex-col">
-                {/* Messages */}
-                <div className="flex-1 space-y-4 mb-4 overflow-y-auto">
-                  {messages.map((message) => (
-                    <div
-                      key={message.id}
-                      className={`flex ${message.type === "user" ? "justify-end" : "justify-start"}`}
-                    >
-                      <div
-                        className={`max-w-[80%] p-3 rounded-lg text-sm ${
-                          message.type === "user" ? "bg-blue-600 text-white" : "bg-gray-100 text-gray-900"
-                        }`}
-                      >
-                        {message.type === "assistant" && (
-                          <div className="flex items-center space-x-2 mb-2">
-                            <Lightbulb className="w-4 h-4" />
-                            <span className="font-medium">AI 어시스턴트</span>
-                          </div>
-                        )}
-                        <p>{message.content}</p>
-                      </div>
-                    </div>
+                    </SelectItem>
                   ))}
+                </SelectContent>
+              </Select>
+            </div>
+
+            {/* 전략 목표 입력 */}
+            <div className="space-y-2">
+              <Label htmlFor="objective">전략 목표 *</Label>
+              <Textarea
+                id="objective"
+                placeholder="전략의 목표를 자유롭게 입력해주세요. 예: 브랜드 인지도 20% 향상, 신제품 런칭, 매출 30% 증대, 타겟 고객층 확대 등"
+                value={formData.objective}
+                onChange={(e) => setFormData((prev) => ({ ...prev, objective: e.target.value }))}
+                rows={4}
+                className="resize-none"
+              />
                 </div>
 
-                {/* Input */}
-                <div className="flex space-x-2">
+            {/* RFP 파일 업로드 (선택) */}
+            <div className="space-y-2">
+              <Label htmlFor="rfpFile">RFP 파일 업로드</Label>
+              <div className="flex items-center space-x-4">
                   <Input
-                    value={input}
-                    onChange={(e) => setInput(e.target.value)}
-                    placeholder="질문을 입력하세요..."
-                    onKeyPress={(e) => e.key === "Enter" && handleSendMessage()}
-                  />
-                  <Button size="sm" onClick={handleSendMessage}>
-                    <Send className="w-4 h-4" />
+                  id="rfpFile"
+                  type="file"
+                  accept=".pdf,.doc,.docx,.ppt,.pptx"
+                  onChange={handleFileUpload}
+                  className="hidden"
+                />
+                <Button
+                  variant="outline"
+                  onClick={() => document.getElementById("rfpFile")?.click()}
+                  className="w-full"
+                >
+                  <Upload className="h-4 w-4 mr-2" />
+                  {formData.rfpFile ? "파일 변경하기" : "RFP 파일 선택하기"}
                   </Button>
+              </div>
+              {formData.rfpFile && (
+                <div className="mt-2">
+                  <div className="flex items-center space-x-2 text-sm text-gray-500">
+                    <FileText className="h-4 w-4" />
+                    <span>{formData.rfpFile.name}</span>
+                  </div>
+                  {uploadProgress < 100 && (
+                    <Progress value={uploadProgress} className="mt-2" />
+                  )}
                 </div>
-              </CardContent>
-            </Card>
+              )}
+              <p className="text-sm text-gray-500">
+                PDF, Word, PowerPoint 문서 형식의 RFP 파일을 업로드할 수 있습니다.
+              </p>
+            </div>
 
-            {/* Quick Actions */}
-            <Card className="mt-6">
-              <CardHeader>
-                <CardTitle className="text-lg">빠른 실행</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-2">
-                  <Button variant="outline" className="w-full justify-start text-sm">
-                    <TrendingUp className="w-4 h-4 mr-2" />
-                    다른 전략 유형 생성
-                  </Button>
-                  <Button variant="outline" className="w-full justify-start text-sm">
-                    <Target className="w-4 h-4 mr-2" />
-                    타겟 세분화 분석
-                  </Button>
-                  <Button variant="outline" className="w-full justify-start text-sm">
-                    <Calendar className="w-4 h-4 mr-2" />
-                    실행 일정 상세화
-                  </Button>
-                  <Button variant="outline" className="w-full justify-start text-sm">
-                    <DollarSign className="w-4 h-4 mr-2" />
-                    예산 최적화 제안
+            {/* 생성 버튼 */}
+            <Button
+              className="w-full"
+              onClick={handleGenerateStrategy}
+              disabled={!canSubmit || isGenerating}
+            >
+              {isGenerating ? (
+                <>
+                  <div className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
+                  전략 생성 중...
+                </>
+              ) : (
+                <>
+                  <ArrowRight className="mr-2 h-4 w-4" />
+                  전략 생성하기
+                </>
+              )}
                   </Button>
                 </div>
               </CardContent>
             </Card>
-          </div>
-        </div>
-      </div>
     </div>
   )
 }

@@ -1,3 +1,11 @@
+/**
+ * 셀렉트 컴포넌트 시스템
+ * 
+ * 이 모듈은 Radix UI의 Select 컴포넌트를 기반으로 한
+ * 완전한 기능을 갖춘 드롭다운 선택 컴포넌트를 제공합니다.
+ * 클라이언트 사이드 렌더링을 위해 "use client" 지시문을 사용합니다.
+ */
+
 "use client"
 
 import * as React from "react"
@@ -6,24 +14,58 @@ import { CheckIcon, ChevronDownIcon, ChevronUpIcon } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 
+/**
+ * 기본 Select 컴포넌트
+ * 
+ * @param {Object} props - Radix UI Select 컴포넌트의 속성들
+ * @returns {JSX.Element} 셀렉트 루트 컴포넌트
+ */
 function Select({
   ...props
 }: React.ComponentProps<typeof SelectPrimitive.Root>) {
   return <SelectPrimitive.Root data-slot="select" {...props} />
 }
 
+/**
+ * SelectGroup 컴포넌트
+ * 
+ * @param {Object} props - Radix UI Select Group 컴포넌트의 속성들
+ * @returns {JSX.Element} 셀렉트 옵션들을 그룹화하는 컴포넌트
+ */
 function SelectGroup({
   ...props
 }: React.ComponentProps<typeof SelectPrimitive.Group>) {
   return <SelectPrimitive.Group data-slot="select-group" {...props} />
 }
 
+/**
+ * SelectValue 컴포넌트
+ * 
+ * @param {Object} props - Radix UI Select Value 컴포넌트의 속성들
+ * @returns {JSX.Element} 선택된 값을 표시하는 컴포넌트
+ */
 function SelectValue({
   ...props
 }: React.ComponentProps<typeof SelectPrimitive.Value>) {
   return <SelectPrimitive.Value data-slot="select-value" {...props} />
 }
 
+/**
+ * SelectTrigger 컴포넌트
+ * 
+ * @param {Object} props - 컴포넌트 속성
+ * @param {string} [props.className] - 추가적인 CSS 클래스
+ * @param {"sm" | "default"} [props.size="default"] - 트리거 버튼의 크기
+ * @param {React.ReactNode} props.children - 트리거 버튼의 내용
+ * 
+ * 특징:
+ * - 반응형 디자인
+ * - 다크 모드 지원
+ * - 접근성 지원
+ * - 커스터마이즈 가능한 스타일링
+ * 
+ * @returns {JSX.Element} 셀렉트 트리거 버튼
+ */
 function SelectTrigger({
   className,
   size = "default",
@@ -50,6 +92,22 @@ function SelectTrigger({
   )
 }
 
+/**
+ * SelectContent 컴포넌트
+ * 
+ * @param {Object} props - 컴포넌트 속성
+ * @param {string} [props.className] - 추가적인 CSS 클래스
+ * @param {React.ReactNode} props.children - 컨텐츠 영역의 내용
+ * @param {"popper" | "item-aligned"} [props.position="popper"] - 드롭다운 위치 전략
+ * 
+ * 특징:
+ * - 애니메이션 효과
+ * - 스크롤 가능한 컨텐츠
+ * - 포지셔닝 전략 지원
+ * - 접근성 지원
+ * 
+ * @returns {JSX.Element} 셀렉트 드롭다운 컨텐츠
+ */
 function SelectContent({
   className,
   children,
@@ -85,6 +143,13 @@ function SelectContent({
   )
 }
 
+/**
+ * SelectLabel 컴포넌트
+ * 
+ * @param {Object} props - 컴포넌트 속성
+ * @param {string} [props.className] - 추가적인 CSS 클래스
+ * @returns {JSX.Element} 셀렉트 그룹의 레이블
+ */
 function SelectLabel({
   className,
   ...props
@@ -98,6 +163,20 @@ function SelectLabel({
   )
 }
 
+/**
+ * SelectItem 컴포넌트
+ * 
+ * @param {Object} props - 컴포넌트 속성
+ * @param {string} [props.className] - 추가적인 CSS 클래스
+ * @param {React.ReactNode} props.children - 아이템의 내용
+ * 
+ * 특징:
+ * - 선택 상태 표시
+ * - 호버/포커스 상태
+ * - 비활성화 상태 지원
+ * 
+ * @returns {JSX.Element} 셀렉트 옵션 아이템
+ */
 function SelectItem({
   className,
   children,
@@ -122,6 +201,13 @@ function SelectItem({
   )
 }
 
+/**
+ * SelectSeparator 컴포넌트
+ * 
+ * @param {Object} props - 컴포넌트 속성
+ * @param {string} [props.className] - 추가적인 CSS 클래스
+ * @returns {JSX.Element} 셀렉트 아이템 구분선
+ */
 function SelectSeparator({
   className,
   ...props
@@ -135,6 +221,13 @@ function SelectSeparator({
   )
 }
 
+/**
+ * SelectScrollUpButton 컴포넌트
+ * 
+ * @param {Object} props - 컴포넌트 속성
+ * @param {string} [props.className] - 추가적인 CSS 클래스
+ * @returns {JSX.Element} 셀렉트 컨텐츠 스크롤 업 버튼
+ */
 function SelectScrollUpButton({
   className,
   ...props
@@ -153,6 +246,13 @@ function SelectScrollUpButton({
   )
 }
 
+/**
+ * SelectScrollDownButton 컴포넌트
+ * 
+ * @param {Object} props - 컴포넌트 속성
+ * @param {string} [props.className] - 추가적인 CSS 클래스
+ * @returns {JSX.Element} 셀렉트 컨텐츠 스크롤 다운 버튼
+ */
 function SelectScrollDownButton({
   className,
   ...props
