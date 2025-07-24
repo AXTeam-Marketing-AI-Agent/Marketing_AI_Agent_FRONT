@@ -58,13 +58,6 @@ npm run build
 npm start
 ```
 
-## 📈 주요 성과
-
-- **개발 기간**: 2024년 12월 (약 1개월)
-- **사용자 대상**: 대홍기획 마케팅 전략팀
-- **기능**: 팩트북 생성, 전략 도출, AI 채팅, 관리자 대시보드
-- **LLM 통합**: 4개 주요 AI 모델 통합 (GPT, Claude, Gemini, Perplexity)
-
 ## 🔐 보안
 
 - 보안 코드 인증 시스템 (8시간 갱신)
@@ -76,15 +69,6 @@ npm start
 **개발자**: 임주혁  
 **소속**: 대홍기획 AX Team  
 **이메일**: juhyeok1104@gmail.com  
-**개발 기간**: 2024년 12월  
-
-### 개발 기여도
-- **기획 및 설계**: 100% (단독 개발)
-- **프론트엔드 개발**: 100% (Next.js, React, TypeScript)
-- **백엔드 연동**: 100% (FastAPI 연동)
-- **UI/UX 디자인**: 100% (Tailwind CSS, Radix UI)
-- **LLM 통합**: 100% (4개 AI 모델 통합)
-- **배포 및 운영**: 100% (Vercel 배포)
 
 ## 📄 라이센스
 
@@ -92,4 +76,4 @@ npm start
 
 ---
 
-**© 2024 임주혁, 대홍기획. All rights reserved.**
+**© 2025 임주혁, 대홍기획. All rights reserved.**
