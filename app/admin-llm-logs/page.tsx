@@ -35,6 +35,7 @@ const TOKEN_PRICES: Record<string, { input: number; output: number }> = {
   
   // Google Gemini models
   "gemini-2.5-flash": { input: 0.0003, output: 0.001 }, // 텍스트/이미지/동영상: $0.30/$1.00 per 1M tokens
+  "gemini 2.5 flash": { input: 0.0003, output: 0.001 }, // 텍스트/이미지/동영상: $0.30/$1.00 per 1M tokens
   "gemini-2.5-pro": { input: 0.00125, output: 0.0025 }, // <=200K tokens: $1.25/$2.50, >200K: $2.50/$10.00
   "gemini-pro": { input: 0.00035, output: 0.00105 },
   "gemini-1.5-pro": { input: 0.00125, output: 0.0025 },
