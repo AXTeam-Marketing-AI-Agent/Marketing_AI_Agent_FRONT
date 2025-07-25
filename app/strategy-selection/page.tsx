@@ -132,8 +132,10 @@ export default function StrategySelectionPage() {
       return <FileText className="w-4 h-4 text-red-500" />
     } else if (["doc", "docx"].includes(extension || '')) {
       return <FileText className="w-4 h-4 text-blue-500" />
-    } else if (["ppt", "pptx"].includes(extension || '')) {
-      return <FileText className="w-4 h-4 text-orange-500" />
+    // } else if (["ppt", "pptx"].includes(extension || '')) {
+    //   return <FileText className="w-4 h-4 text-orange-500" />
+    } else if (extension === 'txt') {
+      return <FileText className="w-4 h-4 text-green-500" />
     } else {
       return <FileText className="w-4 h-4 text-gray-500" />
     }
@@ -276,7 +278,8 @@ export default function StrategySelectionPage() {
                       onChange={handleFileUpload}
                       className="hidden"
                       multiple
-                      accept=".pdf,.doc,.docx,.ppt,.pptx"
+                      // accept=".pdf,.doc,.docx,.ppt,.pptx,.txt"
+                      accept=".pdf,.doc,.docx,.txt"
                     />
                     <Button
                       variant="outline"

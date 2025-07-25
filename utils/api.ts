@@ -59,11 +59,17 @@ export async function createStrategy(data: {
   }
 
   // 실제 FormData 값 확인
+  console.log("=== Strategy 생성 요청 ===");
   for (const [key, value] of formData.entries()) {
-    console.log("Strategy FormData:", key, value);
+    if (value instanceof File) {
+      console.log(`Strategy FormData: ${key} = File(${value.name}, ${value.size} bytes, ${value.type})`);
+    } else {
+      console.log(`Strategy FormData: ${key} = ${value}`);
+    }
   }
+  console.log("=========================");
 
-  const res = await fetch("http://localhost:8000/strategies/generate/", {
+  const res = await fetch(`${API_BASE_URL}/strategies/generate/`, {
     method: "POST",
     body: formData,
   });
