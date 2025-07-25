@@ -79,7 +79,7 @@ export default function StrategySelectionPage() {
   // 실제 팩트북 상세 fetch
   useEffect(() => {
     if (!factbookId) return;
-    fetch(`http://localhost:8000/factbooks/${factbookId}`)
+            fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/factbooks/${factbookId}`)
       .then(res => {
         if (!res.ok) throw new Error("팩트북 정보를 불러오지 못했습니다.")
         return res.json()

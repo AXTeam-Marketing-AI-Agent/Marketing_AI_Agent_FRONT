@@ -1,3 +1,5 @@
+import { API_BASE_URL } from './config';
+
 // utils/api.ts (또는 컴포넌트 내부)
 export async function createFactbook(data: {
   creator_name: string;
@@ -22,7 +24,7 @@ export async function createFactbook(data: {
     console.log("FormData:", key, value);
   }
 
-  const res = await fetch("http://localhost:8000/factbooks/generate/", {
+  const res = await fetch(`${API_BASE_URL}/factbooks/generate/`, {
     method: "POST",
     body: formData,
   });

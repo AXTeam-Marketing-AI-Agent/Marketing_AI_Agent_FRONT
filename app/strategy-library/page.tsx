@@ -129,7 +129,7 @@ export default function StrategyLibraryPage() {
         setLoading(true)
         
         // 전략 데이터만 먼저 로드 (메인 데이터)
-        const strategiesResponse = await fetch('http://localhost:8000/strategies', {
+        const strategiesResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/strategies`, {
           cache: 'no-store' // 항상 최신 데이터 사용
         })
         
@@ -145,10 +145,10 @@ export default function StrategyLibraryPage() {
         // 팩트북과 활동 데이터는 백그라운드에서 로드
         try {
           const [factbooksResponse, activitiesResponse] = await Promise.all([
-            fetch('http://localhost:8000/factbooks/', {
+            fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/factbooks/`, {
               cache: 'no-store'
             }),
-            fetch('http://localhost:8000/activities/recent')
+            fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/activities/recent`)
           ])
           
           if (factbooksResponse.ok) {
@@ -178,7 +178,7 @@ export default function StrategyLibraryPage() {
 
   // 팩트북 전체 리스트 fetch
   useEffect(() => {
-    fetch('http://localhost:8000/factbooks/')
+    fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/factbooks/`)
       .then(res => res.json())
       .then(data => setFactbooks(data))
   }, [])
@@ -187,7 +187,7 @@ export default function StrategyLibraryPage() {
   const fetchRecentActivities = async (offset = 0) => {
     setActivitiesLoading(true)
     try {
-      const res = await fetch(`http://localhost:8000/activities/recent?offset=${offset}&limit=${ACTIVITIES_LIMIT}`)
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/activities/recent?offset=${offset}&limit=${ACTIVITIES_LIMIT}`)
       if (!res.ok) throw new Error("활동 데이터를 불러오지 못했습니다.")
       const data = await res.json()
       if (offset === 0) {
@@ -298,7 +298,7 @@ export default function StrategyLibraryPage() {
     
     setIsDeleting(strategyId)
     try {
-      const response = await fetch(`http://localhost:8000/strategies/${strategyId}`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/strategies/${strategyId}`, {
         method: 'DELETE',
       })
       
@@ -320,7 +320,7 @@ export default function StrategyLibraryPage() {
   // 전략 복제 처리
   const handleDuplicateStrategy = async (strategyId: string) => {
     try {
-      const response = await fetch(`http://localhost:8000/strategies/${strategyId}/duplicate`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/strategies/${strategyId}/duplicate`, {
         method: 'POST',
       })
       

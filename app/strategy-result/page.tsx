@@ -173,9 +173,9 @@ export default function StrategyResultPage() {
     
     // 전략 데이터와 팩트북 데이터를 함께 조회
     Promise.all([
-      fetch(`http://localhost:8000/strategies/${strategyId}`),
-      fetch(`http://localhost:8000/strategies/${strategyId}`).then(res => res.json()).then(strategyData => 
-        fetch(`http://localhost:8000/factbooks/${strategyData.factbook_id}`)
+            fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/strategies/${strategyId}`),
+      fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/strategies/${strategyId}`).then(res => res.json()).then(strategyData =>
+        fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/factbooks/${strategyData.factbook_id}`)
       )
     ])
       .then(([strategyRes, factbookRes]) => {
@@ -231,7 +231,7 @@ export default function StrategyResultPage() {
     if (!window.confirm("정말로 이 전략을 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.")) return
     setIsDeleting(true)
     try {
-      const res = await fetch(`http://localhost:8000/strategies/${strategy.id}`, { method: "DELETE" })
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/strategies/${strategy.id}`, { method: "DELETE" })
       if (!res.ok) throw new Error("삭제 실패")
       toast.success("전략이 삭제되었습니다.")
       window.location.href = "/" // 또는 팩트북 상세로 이동

@@ -284,7 +284,7 @@ export default function FactbookPage({ params }: { params: Promise<{ id: string 
     
     console.log('Fetching factbook with ID:', factbookId)
     
-    fetch(`http://localhost:8000/factbooks/${factbookId}`)
+    fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/factbooks/${factbookId}`)
       .then(res => {
         console.log('API Response status:', res.status)
         if (!res.ok) {
@@ -588,7 +588,7 @@ export default function FactbookPage({ params }: { params: Promise<{ id: string 
     
     setIsDeleting(true)
     try {
-      const response = await fetch(`http://localhost:8000/factbooks/${factbookId}`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/factbooks/${factbookId}`, {
         method: 'DELETE',
       })
       
@@ -622,7 +622,7 @@ export default function FactbookPage({ params }: { params: Promise<{ id: string 
         }
         formData.append(section.key, JSON.stringify(sectionObj))
       })
-      const res = await fetch(`http://localhost:8000/factbooks/${factbookId}`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/factbooks/${factbookId}`, {
         method: 'PATCH',
         body: formData,
       })
@@ -630,7 +630,7 @@ export default function FactbookPage({ params }: { params: Promise<{ id: string 
       toast.success('팩트북 정보가 수정되었습니다.')
       setEditOpen(false)
       // 수정 후 데이터 새로고침
-      const updated = await fetch(`http://localhost:8000/factbooks/${factbookId}`).then(r => r.json())
+      const updated = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/factbooks/${factbookId}`).then(r => r.json())
       setFactbook(updated)
     } catch (e) {
       toast.error('수정에 실패했습니다.')
@@ -643,7 +643,7 @@ export default function FactbookPage({ params }: { params: Promise<{ id: string 
   useEffect(() => {
     if (!showStrategyOverlay || !factbookId) return;
     // URL을 백엔드 스펙에 맞게 수정
-    fetch(`http://localhost:8000/factbooks/${factbookId}/strategies`)
+    fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/factbooks/${factbookId}/strategies`)
       .then(res => res.json())
       .then(data => setStrategies(Array.isArray(data) ? data : []))
       .catch(() => setStrategies([]))
@@ -1074,7 +1074,7 @@ ${strategy.description || ''}
                                   if (confirm("정말로 이 전략을 삭제하시겠습니까?\n이 작업은 되돌릴 수 없습니다.")) {
                                     setIsDeleting(true);
                                     try {
-                                      const response = await fetch(`http://localhost:8000/strategies/${strategy.id}`, {
+                                      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/strategies/${strategy.id}`, {
                                         method: 'DELETE',
                                       });
                                       if (!response.ok) {
@@ -1082,7 +1082,7 @@ ${strategy.description || ''}
                                       }
                                       toast.success("전략이 삭제되었습니다.");
                                       // 전략 리스트 새로고침
-                                      const updatedStrategies = await fetch(`http://localhost:8000/factbooks/${factbookId}/strategies`).then(r => r.json());
+                                      const updatedStrategies = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/factbooks/${factbookId}/strategies`).then(r => r.json());
                                       setStrategies(Array.isArray(updatedStrategies) ? updatedStrategies : []);
                                     } catch (error) {
                                       console.error('Error deleting strategy:', error);

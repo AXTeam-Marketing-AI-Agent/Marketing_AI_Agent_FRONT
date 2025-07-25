@@ -129,7 +129,7 @@ export default function HomePage() {
         setLoading(true)
         
         // 팩트북 데이터만 먼저 로드 (메인 데이터)
-        const factbooksResponse = await fetch('http://localhost:8000/factbooks', {
+        const factbooksResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/factbooks`, {
           cache: 'no-store' // 항상 최신 데이터 사용
         })
         
@@ -144,7 +144,7 @@ export default function HomePage() {
         // 활동 데이터는 백그라운드에서 로드
         setActivitiesLoading(true)
         try {
-          const activitiesResponse = await fetch(`http://localhost:8000/activities/recent?limit=${ACTIVITIES_LIMIT}`)
+          const activitiesResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/activities/recent?limit=${ACTIVITIES_LIMIT}`)
           if (activitiesResponse.ok) {
             const activitiesData = await activitiesResponse.json()
             setActivities(activitiesData)
@@ -173,7 +173,7 @@ export default function HomePage() {
     
     setActivitiesLoading(true)
     try {
-      const res = await fetch(`http://localhost:8000/activities/recent?offset=${offset}&limit=${ACTIVITIES_LIMIT}`)
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/activities/recent?offset=${offset}&limit=${ACTIVITIES_LIMIT}`)
       if (!res.ok) throw new Error("활동 데이터를 불러오지 못했습니다.")
       const data = await res.json()
       
@@ -275,7 +275,7 @@ export default function HomePage() {
     
     setIsDeleting(factbookId)
     try {
-      const response = await fetch(`http://localhost:8000/factbooks/${factbookId}`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/factbooks/${factbookId}`, {
         method: 'DELETE',
       })
       
@@ -297,7 +297,7 @@ export default function HomePage() {
   // 팩트북 복제 처리
   const handleDuplicateFactbook = async (factbookId: string) => {
     try {
-      const response = await fetch(`http://localhost:8000/factbooks/${factbookId}/duplicate`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/factbooks/${factbookId}/duplicate`, {
         method: 'POST',
       })
       

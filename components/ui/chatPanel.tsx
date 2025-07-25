@@ -29,7 +29,7 @@ export function ChatPanel({ strategy, factbook }: ChatPanelProps) {
 
   // 스트리밍 API 호출 함수
   const streamChat = async (input: string) => {
-    const res = await fetch("http://localhost:8000/chat/stream", {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/chat/stream`, {
       method: "POST",
       body: JSON.stringify({ 
         input,

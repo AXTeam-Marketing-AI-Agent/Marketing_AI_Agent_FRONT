@@ -55,7 +55,7 @@ export default function AdminLLMLogsPage() {
 
   useEffect(() => {
     setLoading(true);
-    fetch("http://localhost:8000/llm-logs?limit=200")
+          fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/llm-logs?limit=200`)
       .then((res) => {
         if (!res.ok) throw new Error("로그 데이터를 불러오지 못했습니다.");
         return res.json();
